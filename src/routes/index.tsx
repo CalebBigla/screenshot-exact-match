@@ -268,7 +268,7 @@ function Care({ programs }: { programs: { id: string; title: string; description
     const io = new IntersectionObserver(
       (entries) =>
         entries.forEach((e) => {
-          if (e.isIntersecting) setActive(Number((e.target as HTMLElement).dataset.i));
+          if (e.isIntersecting) setActive(Number((e.target as HTMLElement).dataset["i"]));
         }),
       { rootMargin: "-45% 0px -45% 0px" },
     );
