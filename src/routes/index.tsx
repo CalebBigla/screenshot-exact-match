@@ -102,7 +102,9 @@ function Index() {
         <div className="relative mx-auto w-full max-w-7xl px-6 pb-20 pt-40" style={{ opacity: Math.max(0, 1 - y / 600) }}>
           <p className="rise text-xs uppercase tracking-[0.35em] text-primary">{s.tagline}</p>
           <h1 className="rise mt-6 max-w-5xl font-display text-6xl leading-[0.95] tracking-tight md:text-8xl lg:text-[8.5rem]" style={{ animationDelay: "0.15s" }}>
-            Reveal Jesus by <em className="text-gold">feeding</em> the people.
+            {s.mission.split(/(feeding)/i).map((part, i) =>
+              /^feeding$/i.test(part) ? <em key={i} className="text-gold">{part}</em> : part,
+            )}
           </h1>
           <div className="rise mt-10 flex flex-col gap-8 md:flex-row md:items-end md:justify-between" style={{ animationDelay: "0.35s" }}>
             <p className="max-w-md text-lg text-muted-foreground">{s.intro}</p>
@@ -131,13 +133,11 @@ function Index() {
       <section className="border-y border-border">
         <div className="mx-auto grid max-w-7xl grid-cols-2 divide-x divide-border md:grid-cols-4">
           {[
-            ["1,000+", "Children fed in Gombe"],
-            ["60+", "Widows supported in Yola"],
-            ["3", "States reached"],
-            ["Top 20", "Most influential youths, Taraba"],
-          ].map(([n, l], i) => (
-            <div key={l} className="reveal px-6 py-10" style={{ transitionDelay: `${i * 0.1}s` }}>
-              <p className="font-display text-5xl text-gold md:text-6xl">{n}</p>
+            ...data.outreaches.map((o) => [o.stat, o.location] as const),
+            [String(data.partners.length), "Partner organisations"] as const,
+          ].slice(0, 4).map(([n, l], i) => (
+            <div key={i} className="reveal px-6 py-10" style={{ transitionDelay: `${i * 0.1}s` }}>
+              <p className="font-display text-3xl text-gold md:text-4xl">{n}</p>
               <p className="mt-2 text-sm text-muted-foreground">{l}</p>
             </div>
           ))}
