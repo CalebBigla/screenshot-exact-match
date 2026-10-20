@@ -93,7 +93,7 @@ function AuthForm() {
             options: { emailRedirectTo: `${window.location.origin}/admin` },
           });
     setBusy(false);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     if (mode === "up" && !data.session) toast.success("Check your email to confirm your account.");
   }
 
@@ -170,7 +170,7 @@ function SettingsForm({ initial, onSaved }: { initial: Record<string, unknown>; 
   async function save() {
     const patch = Object.fromEntries(settingFields.map(([k]) => [k, form[k] ?? ""]));
     const { error } = await supabase.from("site_settings").update({ ...patch, updated_at: new Date().toISOString() }).eq("id", 1);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success("Saved");
     onSaved();
   }
@@ -203,7 +203,7 @@ function ListEditor({ table, rows, fields, onChange }: {
   async function add() {
     const next = (rows.at(-1)?.sort_order ?? 0) + 1;
     const { error } = await supabase.from(table).insert({ sort_order: next });
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     onChange();
   }
   return (
@@ -226,14 +226,14 @@ function RowEditor({ table, row, fields, onChange }: {
   async function save() {
     const patch = Object.fromEntries([...fields.map(([k]) => [k, form[k] ?? ""]), ["sort_order", Number(form.sort_order) || 0]]);
     const { error } = await supabase.from(table).update(patch).eq("id", row.id);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success("Saved");
     onChange();
   }
   async function remove() {
     if (!confirm("Delete this item?")) return;
     const { error } = await supabase.from(table).delete().eq("id", row.id);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     onChange();
   }
   return (
